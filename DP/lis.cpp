@@ -1,0 +1,41 @@
+//Longest Increasing Sequence (DP) O(n2)
+
+#include<iostream>
+using namespace std;
+
+
+int main()
+{
+	int n;
+	cin>>n;
+	int a[n], temp[n];
+	for(int i =0;i<n;i++)
+	{
+		cin >> a[i];
+		temp[i] = 0;
+	}
+	temp[0] = 1;
+
+	int max = 1;
+	for(int i=1;i<n;i++)
+	{
+		for(int j=i-1;j >= 0;j--)
+		{
+			if((a[i] > a[j]) && (temp[i] < (temp[j]+1)))
+			{
+				temp[i] = temp[j] + 1;
+				if(max < temp[i])
+				{
+					max = temp[i];
+					break;
+				}
+			}
+		}
+	}
+	cout<<max<<endl;
+	return 1;
+}
+			
+	
+
+

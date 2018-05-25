@@ -1,0 +1,52 @@
+#include<iostream>
+using namespace std;
+
+class A
+{
+	int p;
+	public:
+		A()
+		{}
+		
+		void show()
+		{
+			cout<<"PARENT SHOW\n";
+		}		
+		void getparent()
+		{
+			cout<<"PARENT\n";
+		}
+};
+
+class B : public A
+{
+	int c;
+	public:
+		B() {}
+		void show()
+		{
+			cout<<"CHILD SHOW\n";
+		}		
+
+		void getchild()
+		{
+			cout<<"CHILD\n";
+		}
+};
+
+int main()
+{
+	A a, *aa;
+	B b, *bb;
+
+	aa = &b;
+	aa->show();
+	aa = &a;
+	aa->show();	
+
+
+	return 0;
+}	
+
+
+
