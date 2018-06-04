@@ -1,0 +1,96 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void insert(char);
+void display();
+
+struct node
+{
+	char ch;
+	struct node* next;
+};
+struct node *first=NULL,*cur_loc=NULL,*last=NULL;
+
+int main()
+{
+	char str[100001];
+	int i;
+	first=NULL;
+	cur_loc=NULL;
+	last=NULL;
+	scanf(" %s",str);
+
+	for(i=0;str[i]!='\0';i++)
+	{
+		insert(str[i]);
+	}
+	display();
+	return(0);
+}
+void insert(char c)
+{
+	if(c!='H' && c!='E')
+	{
+		struct node *n;
+		n=(struct node*)malloc(sizeof(struct node));
+		n->ch=c;
+		if(first==NULL)
+		{
+			n->next=NULL;
+			first=n;
+			cur_loc=n;
+			last=n;
+			return;
+		}
+		
+		if(cur_loc==NULL)
+		{
+			n->next=first;
+			first=n;
+			cur_loc=n;
+			return;
+		}
+		if(cur_loc->next==NULL)
+		{	n->next=NULL;
+			cur_loc->next=n;
+			cur_loc=n;
+			last=n;
+		}	
+		else
+		{
+			n->next=cur_loc->next;
+			cur_loc->next=n;
+			cur_loc=n;
+		}
+		return;
+	}
+	else if(c=='H')
+		 {
+			 cur_loc=NULL;
+		 }
+		 else if(c=='E')
+			  {				 
+  			   if(first==NULL)
+				{cur_loc=NULL;return;}		
+			cur_loc=last;
+			}
+			
+		return;
+}
+
+void display()
+{
+	struct node *ptr;
+	ptr=first;
+	while(ptr!=NULL)
+	{
+		printf("%c",ptr->ch);
+		ptr=ptr->next;
+	}
+	
+	printf("\n");
+	return;
+}
+
+
+

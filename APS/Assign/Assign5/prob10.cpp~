@@ -1,0 +1,105 @@
+#include<iostream>
+#include<queue>
+#include<stack>
+using namespace std;
+
+struct node
+{
+	int a,b;
+};
+
+int minimum=10000000;
+queue<node>stk;
+
+int main()
+{
+	int n,m;	
+	cin>>n>>m;
+	int wt[n][m];
+	for(int i=0;i<n;i++)
+	    for(int j=0;j<m;j++)
+		cin>>wt[i][j];
+
+	int b1,b2,g1,g2,visit[n][m],dist[n][m];
+	cin>>b1>>b2>>g1>>g2;
+	
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<m;j++)
+			{visit[i][j]=0;dist[i][j]=10000000;}
+	}
+
+
+	node np,n1;
+	np.a=b1;np.b=b2;
+	visit[np.a][np.b]=1;
+	dist[np.a][np.b]=wt[b1][b2];
+	stk.push(np);	
+
+	while(!stk.empty() )
+	{	
+		n1=stk.front();
+		stk.pop();			
+			
+		if(n1.b!=0)
+		{
+			if(visit[n1.a][n1.b-1]==0)
+			{
+				//visit[n1.a][n1.b-1]=1;
+				np.a=n1.a;np.b=n1.b-1;
+				
+				if((wt[n1.a][n1.b-1]+dist[n1.a][n1.b])<dist[n1.a][n1.b-1])
+					{stk.push(np);dist[n1.a][n1.b-1]=dist[n1.a][n1.b]+wt[n1.a][n1.b-1];}
+				//cout<<np.a<<"  "<<np.b<<"     "<<dist[np.a][np.b]<<endl;
+			}
+		}
+		
+		if(n1.a!=0)
+		{
+			if(visit[n1.a-1][n1.b]==0)
+			{
+				//visit[n1.a-1][n1.b]=1;
+				np.a=n1.a-1;np.b=n1.b;
+				
+				if((wt[n1.a-1][n1.b]+dist[n1.a][n1.b])<dist[n1.a-1][n1.b])
+					{stk.push(np);dist[n1.a-1][n1.b]=dist[n1.a][n1.b]+wt[n1.a-1][n1.b];}
+				//cout<<np.a<<"  "<<np.b<<"     "<<dist[np.a][np.b]<<endl;
+			}
+		}
+
+		if(n1.a!=(n-1))
+		{
+			if(visit[n1.a+1][n1.b]==0)
+			{
+				//visit[n1.a+1][n1.b]=1;
+				np.a=n1.a+1;np.b=n1.b;
+
+				
+				if((wt[n1.a+1][n1.b]+dist[n1.a][n1.b])<dist[n1.a+1][n1.b])
+					{stk.push(np);dist[n1.a+1][n1.b]=dist[n1.a][n1.b]+wt[n1.a+1][n1.b];}
+				//cout<<np.a<<"  "<<np.b<<"     "<<dist[np.a][np.b]<<endl;
+			}
+		}
+		
+		if(n1.b!=(m-1))
+		{
+			if(visit[n1.a][n1.b+1]==0)
+			{
+				//visit[n1.a][n1.b+1]=1;
+				np.a=n1.a;np.b=n1.b+1;
+				if((wt[n1.a][n1.b+1]+dist[n1.a][n1.b])<dist[n1.a][n1.b+1])
+					{stk.push(np);dist[n1.a][n1.b+1]=dist[n1.a][n1.b]+wt[n1.a][n1.b+1];}
+				//cout<<np.a<<"  "<<np.b<<"     "<<dist[np.a][np.b]<<endl;
+			}
+		}
+
+		
+	}
+	
+	cout<<dist[g1][g2]<<endl;
+	
+	return(0);
+}
+
+
+

@@ -1,0 +1,70 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int main()
+{
+  int t;
+  cin>>t;
+  long long int a,b,c,n;
+  while(t--)
+  {
+	long long int no=1,f=1,i=2,median=0,sum=1;
+	cin>>a>>b>>c>>n;
+	
+  	vector<long long int> max_heap;
+	vector<long long int> min_heap;
+
+	make_heap(max_heap.begin(),max_heap.end());
+	make_heap(min_heap.begin(),min_heap.end());
+	max_heap.push_back(1);
+	push_heap (max_heap.begin(),max_heap.end());
+		
+	median=1;
+
+
+	while(i<=n)
+	{
+	   f=(((a*median) % 1000000007)+((b*i) % 1000000007)+c) % 1000000007;
+	   sum=(sum+f) % 1000000007;
+	   max_heap.push_back(f);
+	   push_heap (max_heap.begin(),max_heap.end());
+	   
+	   no++;
+	   if(no%2==0)
+	   {  
+		min_heap.push_back((-1*max_heap.front()));
+		push_heap (min_heap.begin(),min_heap.end());
+
+		pop_heap(max_heap.begin(),max_heap.end());
+		max_heap.pop_back();
+		
+	   }	   
+	   if(max_heap.front()>(-1*min_heap.front()))
+	{
+		long long int temp;
+		temp=max_heap.front();
+		max_heap[0]=(-1*min_heap[0]);
+		min_heap[0]=(-1*temp);
+	}
+	/*for (long long int p=0; p<max_heap.size(); p++) 
+		cout << " " << max_heap[p];cout<<endl;
+	for (long long int p=0; p<min_heap.size(); p++) 
+		cout << " " << min_heap[p];cout<<endl<<endl;
+	*/
+	   median=max_heap.front();	
+	  // cout<<median<<"   "<<f<<"   "<<sum<<endl;
+	   i++;
+	}
+	cout<<sum<<endl;
+	
+   }
+}		
+	
+
+
+
+
+
+

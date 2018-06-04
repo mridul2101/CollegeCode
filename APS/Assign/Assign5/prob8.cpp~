@@ -1,0 +1,98 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+
+struct node
+{
+	int d,distance;
+};
+
+int maximum=0,maximum1=0;
+
+int main()
+{
+	int n,m;	
+	cin>>n>>m;
+	int src,dest;	
+	int adj_mat[n][n],maxm[n];
+	for(int i=0;i<n;i++)
+	{maxm[i]=0;
+		for(int j=0;j<n;j++)
+		adj_mat[i][j]=0;	
+	}
+	for(int i=0;i<m;i++)
+	{
+		cin>>src>>dest;
+		adj_mat[src][dest]=1;
+		adj_mat[dest][src]=1;
+		
+	}
+	
+
+	for(int i=0;i<n;i++)
+	{	
+		stack<node>stk;
+		int flag=0,flag1=0;
+		struct node np,n1;
+		int visit[n],distan[n];
+		for(int k=0;k<n;k++)
+			{distan[k]=1000;visit[k]=0;}
+		np.d=i;
+		np.distance=0;
+		stk.push(np);
+		visit[i]=1;
+		distan[i]=0;
+		while(!stk.empty())	
+		{	
+			
+			np=stk.top();
+			
+			stk.pop();
+			for(int j=0;j<n;j++)
+			{
+				if(adj_mat[np.d][j]==1 && ( visit[j]==0 || distan[j]>=(np.distance+1)))
+				{
+					flag=1;					
+					n1.d=j;
+					n1.distance=np.distance+1;
+					stk.push(n1);
+					visit[j]=1;
+					distan[j]=np.distance+1;
+				}
+				if (distan[j]>=(np.distance+1) )
+				{flag1=1;}
+				
+			}
+			
+		}
+		if(flag==1)
+			{
+				for(int k=0;k<n;k++)
+				{
+					if(maxm[i]<distan[k] && distan[k]!=1000 && flag1==1)
+						maxm[i]=distan[k];
+				}
+				/*temp_max=np.distance+1;
+				if(temp_max > maximum && (flag1==1) )
+					{maximum=temp_max;}
+				*/
+			}
+					
+	}
+
+	for(int i=0;i<n;i++)
+	  {
+		if(maximum<maxm[i])
+			maximum=maxm[i];
+	  }
+		
+	cout<<maximum<<endl;
+}
+
+	
+
+
+
+
+
+

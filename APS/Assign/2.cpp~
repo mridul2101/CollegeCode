@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+long long int MEDIAN=1;
+
+int main()
+{
+	long long int T,i,j,balance1,balance2;
+	long long int sum=1;
+	long long int N,a,b,c,fx;
+	scanf("%lld",&T);
+	for(j=0;j<T;j++)
+	{
+		scanf("%lld %lld %lld %lld",&a,&b,&c,&N);
+		
+		sum=1;
+		
+		priority_queue<long long int, vector<long long int>,less<long long int> >maxHeap;
+		priority_queue<long long int, vector<long long int>,greater<long long int> >minHeap;
+
+		maxHeap.push(1);
+		MEDIAN=1;
+
+		for(i=2;i<=N;i++)
+		{
+			fx=((a*MEDIAN)+(b*i)+c)% 1000000007;
+			sum=(sum+fx);
+
+			if(fx<maxHeap.top())
+				maxHeap.push(fx);
+
+			else
+				minHeap.push(fx);
+
+			balance1=maxHeap.size()-minHeap.size();
+			balance2=minHeap.size()-maxHeap.size();
+
+			if(balance1==2)
+			{
+				minHeap.push(maxHeap.top());
+				maxHeap.pop();
+			}
+			
+						
+
+			else if(balance2==2)
+			{
+				maxHeap.push(minHeap.top());
+				minHeap.pop();
+			}
+			
+
+		
+			if(minHeap.size()>maxHeap.size())
+			MEDIAN=minHeap.top();
+		else
+			MEDIAN=maxHeap.top();
+
+		printf("%lld\n",MEDIAN);	
+		}
+		printf("%lld\n",sum);
+	}
+	return 0;
+}

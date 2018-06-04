@@ -1,0 +1,30 @@
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	int n;
+	cin>>n;
+	int ht[n],count[n],max=0;
+	for(int i=0;i<n;i++)
+		count[i]=1;
+	for(int i=0;i<n;i++)
+		cin>>ht[i];
+	
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<i;j++)
+		{
+			if(ht[i]>=ht[j] && count[i]<=count[j])
+				count[i]=count[j]+1;
+		}
+		if(max<=count[i])
+			max=count[i];
+		
+	}
+	cout<<max<<endl;
+	return(0);
+}
+		
+
+

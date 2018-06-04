@@ -1,0 +1,173 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+	struct node *left,*right,*par;
+	int data;
+};
+struct node *root;
+node *r,*r1;
+int find(int,int*);
+struct node* cr_tree(int*,int*,int,int);
+void search(struct node*,int,int,int);
+int count=0,n,l=0,f1=0,l1=0;
+int main()
+{
+	cin>>n;
+	int pre[n],in[n];
+	for(int i=0;i<n;i++)
+	{
+		cin>>pre[i];
+	}
+	for(int i=0;i<n;i++)
+	{
+		cin>>in[i];
+	}
+	root=cr_tree(in,pre,0,n-1);
+	struct node *ptr;
+	ptr=root;
+	//inorder(ptr);
+	//cout<<endl;
+	int q;
+	cin>>q;
+
+	while(q--)
+	{
+	   r=r1=NULL;
+	    f1=0;
+	    int a,b,a_d,b_d;
+	    cin>>a>>b;
+	    if(a==b)
+	    {cout<<a<<endl;continue;}
+	    struct node *a_ptr,*b_ptr;
+	    ptr=root;
+	    search(ptr,a,b,0);
+	    a_ptr=r;
+	    a_d=l;
+	    ptr=root;
+	    b_ptr=r1;
+	    b_d=l1;
+	    //cout<<a_ptr->data<<"  "<<b_ptr->data<<endl;
+	    if(a_d>b_d)
+	    {
+		while(a_d!=b_d)
+		{
+		   a_ptr=a_ptr->par;
+		   a_d--;
+		}
+	    }
+	    else if(b_d>a_d)
+	    {
+		while(a_d!=b_d)
+		{
+		   b_ptr=b_ptr->par;
+		   b_d--;
+		}
+	    } 
+	  while(a_ptr->data!=b_ptr->data)
+	  {
+		a_ptr=a_ptr->par;
+		b_ptr=b_ptr->par;
+	  }
+	cout<<a_ptr->data<<endl;
+	    //cout<<a_d<<"  "<<b_d<<"  ";//<<a_ptr->data<<"  "<<b_ptr->data<<endl;
+	}
+} 	
+
+void search(struct node *ptr,int value,int value1,int c)
+{
+	
+	if(f1==2)
+	  return;
+	if(ptr==NULL)
+	   return;
+	else
+	{c++;
+		search(ptr->left,value,value1,c);
+		if(f1==2)
+		  return;
+		
+		if(ptr->data==value)
+		{l=c;f1++;
+			r=ptr;
+		}
+		if(f1==2)
+		  return;
+
+		if(ptr->data==value1)
+		{l1=c;f1++;
+			r1=ptr;			
+		}
+		if(f1==2)
+		  return;
+
+		search(ptr->right,value,value1,c);
+	}
+}
+
+
+
+struct node* cr_tree(int in[],int pre[],int initial,int end)
+{
+	if(initial>end)
+	 return NULL;
+	struct node *n;
+	n=new node();
+	n->data=pre[count];
+	n->right=n->left=NULL;
+	count++;
+	int a;
+	a=find(pre[count-1],in,initial,end);
+	n->left=cr_tree(in,pre,initial,(a-1));
+	if(n->left!=NULL)	
+	n->left->par=n;
+
+	n->right=cr_tree(in,pre,a+1,end);
+	if(n->right!=NULL)	
+	n->right->par=n;
+	return(n);
+}	
+
+int find(int value,int in[],int initial,int end)
+{int i;
+	for(i=initial;i<=end;i++)
+	{
+		if(in[i]==value)
+		  break;
+	}
+	return (i);
+}
+
+
+
+
+
+/*struct node* search(struct node *ptr,int value,int c)
+{
+	stack<node*>common;
+	do
+	{
+		while(ptr!=NULL)
+		{
+		   common.push(ptr);
+		   ptr=ptr->left;
+		}
+		ptr=common.top();
+		common.pop();
+		if(ptr->data==value)
+		{break;}		
+ 		//cout<<ptr->data<<" ";
+		ptr=ptr->right;		
+	}while(ptr!=NULL or !common.empty());
+	l=0;
+	struct node *p;
+	p=ptr;
+	while(p!=NULL)
+	{
+	   l++;
+	   p=p->par;
+	}
+	return(ptr);
+} */
+

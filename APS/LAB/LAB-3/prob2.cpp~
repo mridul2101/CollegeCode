@@ -1,0 +1,98 @@
+/*You’re given a non empty string made of only opening and closing braces. Your task is to find the minimum number of “operations” needed to make the string stable. The definition for being stable is as follows:
+
+An empty string is stable.
+1. If S is stable, then {S} is also stable.
+2. If S and T are both stable, then ST (the concatenation of the two) is also stable.
+All of these strings are stable: {}, {}{}, and {{}{}}; But none of these: }{, {{}{, nor {}{.
+
+The only operation allowed on the string is to replace an opening brace with a closing brace, or visa-versa.
+
+
+Input:
+First Line would be the T, number of Test Cases.
+Following T lines would be a non empty string of opening and closing braces and nothing else. No string has more than 100000 braces. All sequences are of even length.
+
+Output:
+for Each Test Case print N followed by a '\n' ( just print a new line, no need to display '\n' )
+Where N is the minimum number of operations needed to convert the given string into a balanced one
+
+
+Sample Case :
+
+Input:
+3
+}{
+{}{}{}
+{{{}
+Output:
+2
+0
+1
+
+Explanation:
+for “}{“ ,you need to operate on both the braces to make the string balanced.
+for “” , it is already balanced.
+For “{{{}”, you just need to convert the second brace to the closing brace.
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+#include<iostream>
+#include<stack>
+using namespace std;
+#include<string.h>
+
+int main()
+{
+	int t,a=0,value;
+	cin>>t;
+	char s[100001];
+	
+	while(t--)
+	{	
+		stack<int> stk;
+		cin>>s;
+		//l=strlen(s);
+		a=0;
+		for(int i=0;s[i]!='\0';i++)
+		{
+			if(s[i]=='{')
+			{stk.push(1);}
+			
+			if(s[i]=='}')
+			{
+				if(!stk.empty())
+ 				   stk.pop();
+				else
+				{
+					a++;
+					stk.push(1);
+				}
+			}
+		}
+		value=((int)stk.size())/2;
+		a=a+value;
+
+		cout<<a<<endl;
+	}
+return(0);
+}
+
+
+
+
+
+		
+
+
+
+

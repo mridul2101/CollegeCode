@@ -1,0 +1,163 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+
+struct node
+{
+	struct node *left,*right,*par;
+	int data;
+};
+struct node *root;
+//node *r,*r1;
+void postorder(struct node*,int*);
+int find(int,int*);
+struct node* cr_tree(int*,int*,int,int);
+//void search(struct node*,int,int,int);
+int count=0,n,post[3000000];
+
+int main()
+{
+	cin>>n;
+	int pre[n],in[n];
+	for(int i=0;i<n;i++)
+	{
+		cin>>pre[i];
+	}
+	for(int i=0;i<n;i++)
+	{
+		cin>>in[i];
+	}
+	root=cr_tree(in,pre,0,n-1);
+	struct node *ptr;
+	ptr=root;count=0;
+	postorder(ptr,post);
+	int q;
+	cin>>q;
+
+	while(q--)
+	{
+	    int a,b,k[100000]={-1},p=0,fl1=0,fl2=0;
+	    cin>>a>>b;
+	    if(a==b)
+	    {cout<<a<<endl;continue;}
+	    for(int i=0;i<n;i++)
+	    {
+		if(fl1==1 and fl2==1)
+			break;
+		if(((fl1==1) and (fl2==0)) or ((fl2==1) and (fl1==0)))
+		{
+			k[p]=in[i];p++;		
+		}
+		
+		if((a!=in[i] and b!=in[i] and fl1==0 and fl2==0 ))
+		   continue;
+		if(a==in[i])
+		{
+		    fl1=1;k[p]=in[i];p++;	continue;		 
+		}
+		if(b==in[i])
+		{
+		    fl2=1;k[p]=in[i];p++;	continue;		 
+		}
+		if(fl1==1 and fl2==1)
+			break;
+		
+	     } 
+	     cout<<p<<endl;
+	    for(int i=n-1;i>=0;i--)
+	    {
+		for(int j=0;j<p-1;j++)
+		{//cout<<k[j]<<"   "<<post[i]<<endl;
+			if(post[i]==k[j])
+			{
+				if(p==2)
+				 cout<<k[j-1]<<endl;	
+				else
+			cout<<" cs "<<post[i]<<endl;fl1=10;break;}
+		}
+		if(fl1==10)
+		break;
+	    }
+
+	
+	    //cout<<a_d<<"  "<<b_d<<"  ";//<<a_ptr->data<<"  "<<b_ptr->data<<endl;
+	}
+} 	
+
+void postorder(struct node *ptr,int post[])
+{
+	stack<node*>common1;
+	int value=ptr->data;
+	do
+	{
+		while(ptr!=NULL)
+		{
+		   common1.push(ptr);
+		   if(ptr->right!=NULL)
+		   {
+			ptr->right->data=-(ptr->right->data);
+			common1.push(ptr->right);
+			
+		   }
+		   ptr=ptr->left;
+		}
+		ptr=common1.top();
+		common1.pop();
+
+		while(ptr->data>=0)
+		{
+			post[count]=ptr->data;count++;
+			if (ptr->data==value)
+			   break;
+			ptr=common1.top();
+			common1.pop();
+		}
+		if (ptr->data==value)
+			   break;
+			
+		if(ptr->data<0)
+		{
+			ptr->data=-(ptr->data);
+		}
+	}while(ptr!=NULL or !common1.empty());
+	
+}
+
+
+
+
+struct node* cr_tree(int in[],int pre[],int initial,int end)
+{
+	if(initial>end)
+	 return NULL;
+	struct node *n;
+	n=new node();
+	n->data=pre[count];
+	n->right=n->left=NULL;
+	count++;
+	int a;
+	a=find(pre[count-1],in);
+	n->left=cr_tree(in,pre,initial,(a-1));
+	if(n->left!=NULL)	
+	n->left->par=n;
+
+	n->right=cr_tree(in,pre,a+1,end);
+	if(n->right!=NULL)	
+	n->right->par=n;
+	return(n);
+}	
+
+int find(int value,int in[])
+{int i;
+	for(i=0;i<n;i++)
+	{
+		if(in[i]==value)
+		  break;
+	}
+	return (i);
+}
+
+
+
+
+

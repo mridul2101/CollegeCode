@@ -1,0 +1,69 @@
+#include<iostream>
+using namespace std;
+#include<stdlib.h>
+#include<math.h>
+
+int comp(const void * a, const void * b)
+{
+  return ( *(int*)a - *(int*)b );
+}
+
+int main()
+{
+	int n,p,q,cum_sum=0;
+	cin>>n;
+	int a[n];
+	for(int i=0;i<n;i++)
+	{cin>>a[i];cum_sum+=a[i];}
+	qsort(a,n,sizeof(int),comp);
+	p=pow(3,n);
+	int s[3]={-1,0,1},b[p][n],s1=0,sum[10000]={0};
+	q=p;
+	for(int i=0;i<n-1;i++)
+	{
+	   q=q/3;s1=0;
+	   for(int j=0;j<p;j++)
+	   { 
+		if(j%q==0)
+		{
+			b[j][i]=s[s1++];
+			s1=s1%3;
+		}
+		else
+			b[j][i]=b[j-1][i];	
+	  }
+	}
+	s1=0;
+	for(int i=0;i<p;i++)
+	{
+		b[i][n-1]=s[s1++];
+		s1=s1%3;
+	}	
+	
+	int a1=0;
+	for(int i=0;i<p;i++)
+	{	sum[a1]=0;
+		for(int j=0;j<n;j++)
+		{
+		   sum[a1]+=(b[i][j]*a[j]);
+		}a1++;
+	}a1++;
+
+	qsort(sum,a1,sizeof(int),comp);			
+	
+	for(int i=1;i<a1;i++)
+	{
+		if(sum[i]>0 && sum[i]!=sum[i-1] && sum[i]<=cum_sum)
+			cout<<sum[i]<<" ";
+	}
+	
+	cout<<endl;
+	return(0);
+}
+	
+
+
+
+
+	
+
